@@ -21,7 +21,5 @@ if (require(ggplot2, quietly = TRUE)) {
 %>
 
 <%=
-a <- cars
-class(a) <- c("myclass", class(a))
-a
+head(cars, 3)
 %>

@@ -17,23 +17,23 @@ pkg_file <- function(x, path = NULL) {
 #' 
 #' @param file brew file
 #' @param output output file
-#' @param config config file (yml)
+#' @oaram theme theme (default: tufte)
+#' @param config_file config file (requires tex template, default: NULL)
 #' @examples
 #' \dontrun{
 #' renderReport(system.file("examples/report.brew", package = "reportTemplate"))
 #' }
 #' @export
-renderReport <- function(file, output = "output.pdf", config = NULL) {
-  # Define custom pander class
-  # pander.myclass <- function(x) cat("hej")
+renderReport <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL) {
   
-  # If config not defined, use package default
-  if (is.null(config)) {
-    config <- pkg_file("default.yml")
+  # Read config file
+  if (is.null(config_file)) {
+    config_file <- pkg_file(paste0(theme, ".yml"), "config")
   }
   
-  # Read config
-  config <- yaml.load_file(config)
+  if (file.exists(config_file)) {
+    config <- yaml.load_file(config_file)
+  } else stop("Config file is missing!")
   
   # Evaluation options
   for(x in config$evalsOptions) {
@@ -46,8 +46,7 @@ renderReport <- function(file, output = "output.pdf", config = NULL) {
   }
   
   # Generate temporary file path
-  tmp <- tempfile()
-  tmp_dir <- dirname(tmp)
+  tmp_dir <- dirname(tempfile())
   
   # Create temporary directories
   dir.create(tmp_dir, showWarnings = F)
@@ -64,10 +63,7 @@ renderReport <- function(file, output = "output.pdf", config = NULL) {
   if (is.null(tmpl) || !file.exists(tmpl)) {
     if (file.exists(pkg_file(tmpl, "templates"))) {
       tmpl <- pkg_file(tmpl, "templates")
-    } else {
-      warning("Tex template isn't specified correctly -> using `tufte-handout.template` (default)")
-      tmpl <- pkg_file("tufte-handout.template", "templates")
-    }
+    } else stop("Tex template is missing!")
   }
   
   file.copy(tmpl, file.path(tmp_dir, "templates", basename(tmpl)), overwrite = T)

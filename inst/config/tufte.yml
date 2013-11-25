@@ -1,4 +1,3 @@
-output: pdf
 tex:
   template: tufte-handout.template
   replace: 
@@ -12,4 +11,3 @@ panderOptions:
   - graph.grid: false
   - graph.grid.minor: false
   - graph.legend.position: bottom
-  
