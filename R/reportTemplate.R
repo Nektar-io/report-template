@@ -13,7 +13,6 @@ pkg_file <- function(x, path = NULL) {
 #' Render report
 #' 
 #' Render PDF report from a brew template
-#' Requires: On Mac OS install X11 support, e.g. XQuartz-2.7.5.dmg
 #' 
 #' @param file brew file
 #' @param output output file
