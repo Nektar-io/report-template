@@ -16,7 +16,7 @@ reportTemplate
 ## Todo
 
 - Add support for custom pander class functions (see [Pander S3](https://github.com/Rapporter/pander/blob/master/R/S3.R))
-- Add support for whisker partials (see [knitr-whisker-template](https://bitbucket.org/reinholdsson/knitr-whisker-template/src))
+- ~~Add support for whisker partials (see [knitr-whisker-template](https://bitbucket.org/reinholdsson/knitr-whisker-template/src))~~ (done!)
 
 ## Inspiration
 
