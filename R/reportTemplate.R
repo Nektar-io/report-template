@@ -18,12 +18,17 @@ pkg_file <- function(x, path = NULL) {
 #' @param output output file
 #' @oaram theme theme (default: tufte)
 #' @param config_file config file (requires tex template, default: NULL)
+#' @param partials whisker partials
+#' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
+#' @param data whisker data
 #' @examples
 #' \dontrun{
 #' renderReport(system.file("examples/report.brew", package = "reportTemplate"))
+#' renderReport(system.file("examples/report.whisker", package = "reportTemplate"))
+#' renderReport(system.file("examples/report-2.whisker", package = "reportTemplate"), data = list(title = "this is a plot"), partials = list(standard = "this the standard partial (title = {{title}})"))
 #' }
 #' @export
-renderReport <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL) {
+renderReport <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL, partials = NULL, partials_path = "partials", data = NULL) {
   
   # Read config file
   if (is.null(config_file)) {
@@ -67,9 +72,20 @@ renderReport <- function(file, output = "output.pdf", theme = "tufte", config_fi
   
   file.copy(tmpl, file.path(tmp_dir, "templates", basename(tmpl)), overwrite = T)
   
+  # whisker -> brew (support for partials)
+  #   Note: There is already support for partial files in whisker,
+  #   however they require the partials to be in the current work dir
+  #   and for some reason I cannot change the work dir temporarily (=> env error)
+  brew <- render_template(
+    file,
+    data = data,
+    partials = c(partials, get_partials(file.path(dirname(file), partials_path)))
+  )
+  
   # brew -> tex
   Pandoc.brew(
-    file = file.path(file),
+    #file = file.path(file),
+    text = brew,
     output = tex_file,
     convert = 'tex',
     options = paste0('--template=', tmpl),

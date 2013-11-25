@@ -1,0 +1,12 @@
+Whisker partials example
+========================================================
+
+{{>text.md}}
+
+{{>cars.brew}}
+
+{{>standard}}
+
+You can also embed plots, for example:
+
+{{>plot.brew}}
