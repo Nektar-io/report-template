@@ -7,8 +7,9 @@ reportTemplate
 
 - (Mac OS) install X11 support, e.g. XQuartz-2.7.5.dmg
 - Pandoc
+- pdflatex
 
-Example:
+## Examples
 
     renderReport(system.file("examples/report.brew", package = "reportTemplate"))
     
