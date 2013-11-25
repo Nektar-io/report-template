@@ -11,7 +11,10 @@ reportTemplate
 
 ## Examples
 
-    renderReport(system.file("examples/report.brew", package = "reportTemplate"))
+    renderReport(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
+    renderReport(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
+    renderReport(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
+
     
 ## Todo
 
