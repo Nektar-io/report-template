@@ -23,9 +23,9 @@ pkg_file <- function(x, path = NULL) {
 #' @param data whisker data
 #' @examples
 #' \dontrun{
-#' renderReport(system.file("examples/report.brew", package = "reportTemplate"))
-#' renderReport(system.file("examples/report.whisker", package = "reportTemplate"))
-#' renderReport(system.file("examples/report-2.whisker", package = "reportTemplate"), data = list(title = "this is a plot"), partials = list(standard = "this the standard partial (title = {{title}})"))
+#'   renderReport(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
+#'   renderReport(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
+#'   renderReport(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
 #' }
 #' @export
 renderReport <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL, partials = NULL, partials_path = "partials", data = NULL) {
