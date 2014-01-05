@@ -93,7 +93,8 @@ render_report <- function(
     output = tex_file,
     convert = format,
     options = paste0('--template=', tmp_tmpl),
-    open = F
+    open = FALSE, 
+    footer = FALSE
   )
   
   # Replace code in tex
