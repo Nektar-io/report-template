@@ -31,3 +31,26 @@ read_file <- function(file) {
   close(con)
   return(txt)
 }
+
+
+#' pander.format.tables
+#' 
+#' function for rendering tables of class format.tables
+#' 
+#' @param x format table object
+#' @export
+pander.format.tables <- function(x){
+  type <- "html"
+  for(i in 1:100){
+    if(exists("convert", envir = parent.frame(n=i))){
+      type <- get("convert", envir = parent.frame(n=i))
+      break
+    } 
+    if(environmentName(globalenv()) == environmentName(parent.frame(n=i)))
+      break
+  }
+  if(is.logical(type)){
+    type <- "html"
+  }
+  cat(x$render(type=ifelse(type == "pdf", "tex", type)))
+}

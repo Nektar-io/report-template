@@ -1,1 +1,2 @@
 export(render_report)
+export(pander.format.tables)
