@@ -9,6 +9,7 @@
 #' @param partials whisker partials
 #' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
 #' @param data whisker data
+#' @param clean remove all temporarily created files (default: TRUE)
 #' @examples
 #' \dontrun{
 #'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
@@ -16,7 +17,16 @@
 #'   render_report(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
 #' }
 #' @export
-render_report <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL, partials = NULL, partials_path = "partials", data = NULL) {
+render_report <- function(
+  file,
+  output = "output.pdf",
+  theme = "tufte",
+  config_file = NULL,
+  partials = NULL,
+  partials_path = "partials",
+  data = NULL,
+  clean = T
+) {
   
   # Read config file
   if (is.null(config_file)) {
@@ -91,5 +101,9 @@ render_report <- function(file, output = "output.pdf", theme = "tufte", config_f
   file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
   
   # Clean up
-  unlink(tmp_dir, recursive = T)
+  if (clean == T) {
+    unlink(tmp_dir, recursive = T)
+  } else {
+    message("Temporary files: ", tmp_dir)
+  }
 }
