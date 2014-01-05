@@ -10,6 +10,7 @@
 #' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
 #' @param data whisker data
 #' @param clean remove all temporarily created files (default: TRUE)
+#' @param format format of the report, takes "tex"
 #' @examples
 #' \dontrun{
 #'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
@@ -25,8 +26,12 @@ render_report <- function(
   partials = NULL,
   partials_path = "partials",
   data = NULL,
-  clean = T
+  clean = T, 
+  format="tex"
 ) {
+  
+  #format == "pdf" means internally "tex"
+  format <- ifelse(format == "pdf", "tex", format)
   
   # Read config file
   if (is.null(config_file)) {
@@ -55,7 +60,7 @@ render_report <- function(
   dir.create(file.path(tmp_dir, "templates"), showWarnings = F)
   
   # Generate temporary tex file
-  tex_file <- file.path(tmp_dir, "output.tex")
+  tex_file <- file.path(tmp_dir, paste0("output.", format))
   
   file.copy(file, file.path(tmp_dir, basename(file)), overwrite = T)
   
@@ -80,17 +85,18 @@ render_report <- function(
     partials = c(partials, get_partials(file.path(dirname(file), partials_path)))
   )
   
+  
   # brew -> tex
   Pandoc.brew(
     text = brew,
     output = tex_file,
-    convert = 'tex',
+    convert = format,
     options = paste0('--template=', file.path(tmp_dir, "templates", basename(tmpl))),
     open = F
   )
   
   # Replace code in tex
-  tex <- readLines(tex_file)
+  tex <- readLines(tex_file, warn = FALSE)
   for(x in config$tex$replace) {
     tex <- gsub(names(x), pure_value(x), tex)
   }
@@ -99,8 +105,13 @@ render_report <- function(
   #file.copy(tex_file, "output.tex", overwrite = T)
   
   # tex -> pdf
-  system(sprintf("pdflatex -output-directory=%s %s ", tmp_dir, tex_file))
-  file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
+  if (format == "tex"){
+    system(sprintf("pdflatex -output-directory=%s %s ", tmp_dir, tex_file))
+    file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
+  }else{
+    file.copy(tex_file, output, overwrite = T)
+  }
+  
 
   
   
