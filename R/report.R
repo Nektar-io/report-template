@@ -1,34 +1,22 @@
-#' Return only pure value
-pure_value <- function(x) {
-  names(x) <- NULL
-  return(unlist(x))
-}
-
-#' Package file
-pkg_file <- function(x, path = NULL) {
-  if (!is.null(path)) x <- file.path(path, x)
-  system.file(x, package = getPackageName())
-}
-
 #' Render report
 #' 
 #' Render PDF report from a brew template
 #' 
 #' @param file brew file
 #' @param output output file
-#' @oaram theme theme (default: tufte)
+#' @param theme theme (default: tufte)
 #' @param config_file config file (requires tex template, default: NULL)
 #' @param partials whisker partials
 #' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
 #' @param data whisker data
 #' @examples
 #' \dontrun{
-#'   renderReport(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
-#'   renderReport(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
-#'   renderReport(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
+#'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
+#'   render_report(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
+#'   render_report(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
 #' }
 #' @export
-renderReport <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL, partials = NULL, partials_path = "partials", data = NULL) {
+render_report <- function(file, output = "output.pdf", theme = "tufte", config_file = NULL, partials = NULL, partials_path = "partials", data = NULL) {
   
   # Read config file
   if (is.null(config_file)) {
@@ -84,7 +72,6 @@ renderReport <- function(file, output = "output.pdf", theme = "tufte", config_fi
   
   # brew -> tex
   Pandoc.brew(
-    #file = file.path(file),
     text = brew,
     output = tex_file,
     convert = 'tex',
@@ -97,7 +84,7 @@ renderReport <- function(file, output = "output.pdf", theme = "tufte", config_fi
   for(x in config$tex$replace) {
     tex <- gsub(names(x), pure_value(x), tex)
   }
-  cat(tex, file = tex_file, sep="\n")
+  cat(tex, file = tex_file, sep = "\n")
   
   # tex -> pdf
   system(sprintf("pdflatex -output-directory=%s %s ", tmp_dir, tex_file))

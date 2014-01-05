@@ -11,11 +11,11 @@ reportTemplate
 
 ## Examples
 
-    renderReport(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
-    renderReport(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
-    renderReport(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
+    render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
+    render_report(system.file("examples/report-2.template", package = "reportTemplate"), "report-2.pdf")
+    render_report(system.file("examples/report-3.template", package = "reportTemplate"), "report-3.pdf", data = list(title = "This is a plot!"), partials = list(something = "this the standard partial (title = {{title}})"))
 
-    
+
 ## Todo
 
 - Add support for custom pander class functions (see [Pander S3](https://github.com/Rapporter/pander/blob/master/R/S3.R))

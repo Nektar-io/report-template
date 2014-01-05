@@ -1,10 +1,14 @@
 Package: reportTemplate
 Type: Package
-Title: What the package does (short line)
+Title: Report Template
 Version: 1.0
 Date: 2013-11-25
 Author: Thomas Reinholdsson
 Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
-Description: More about what it does (maybe more than one line)
-Depends: pander, yaml, whisker, tools
-License: What license is it under?
+Description: Render PDF reports from templates written in RMarkdown and/or brew.
+Depends:
+    pander,
+    yaml,
+    whisker,
+    tools
+License: AGPLv3
