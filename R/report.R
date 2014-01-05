@@ -73,7 +73,8 @@ render_report <- function(
     } else stop("Tex template is missing!")
   }
   
-  file.copy(tmpl, file.path(tmp_dir, "templates", basename(tmpl)), overwrite = T)
+  tmp_tmpl <- file.path(tmp_dir, "templates", basename(tmpl))
+  file.copy(tmpl, tmp_tmpl, overwrite = T)
   
   # whisker -> brew (support for partials)
   #   Note: There is already support for partial files in whisker,
@@ -91,7 +92,7 @@ render_report <- function(
     text = brew,
     output = tex_file,
     convert = format,
-    options = paste0('--template=', file.path(tmp_dir, "templates", basename(tmpl))),
+    options = paste0('--template=', tmp_tmpl),
     open = F
   )
   
