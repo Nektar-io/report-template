@@ -85,7 +85,7 @@ render_report <- function(
     text = brew,
     output = tex_file,
     convert = 'tex',
-    options = paste0('--template=', tmpl),
+    options = paste0('--template=templates/', tmpl),
     open = F
   )
   
