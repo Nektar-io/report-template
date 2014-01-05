@@ -97,7 +97,7 @@ render_report <- function(
   }
   cat(tex, file = tex_file, sep = "\n")
   
-  file.copy(tex_file, "output.tex", overwrite = T)
+  #file.copy(tex_file, "output.tex", overwrite = T)
   
   # tex -> pdf
   system(sprintf("pdflatex -output-directory=%s %s ", tmp_dir, tex_file))
