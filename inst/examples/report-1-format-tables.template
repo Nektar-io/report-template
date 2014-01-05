@@ -24,10 +24,10 @@ if (require(ggplot2, quietly = TRUE)) {
 head(cars, 3)
 %>
 
-\begin{latexcode}
+
 <%=
 require(format.tables)
 x <- format.tables(data=head(cars, 3), styles=rep("plain", 3), column.names = names(cars), names.style = "header", header=NULL)
 x$render(type="latex")
 %>
-\end{latexcode}
+
