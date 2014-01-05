@@ -28,6 +28,6 @@ head(cars, 3)
 <%=
 require(format.tables)
 x <- format.tables(data=head(cars, 3), styles=rep("plain", 3), column.names = names(cars), names.style = "header", header=NULL)
-x$render(type="tex")
+x
 %>
 
