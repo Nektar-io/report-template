@@ -12,6 +12,7 @@
 #' @param clean remove all temporarily created files (default: TRUE)
 #' @param format format of the report, takes "tex" or "html"
 #' @param tex_engine which tex engine should bee used, default is pdflatex
+#' @param tex_runs how many times should tex run, e.g. for updating table of contents
 #' @examples
 #' \dontrun{
 #'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
@@ -29,7 +30,8 @@ render_report <- function(
   data = NULL,
   clean = T, 
   format="tex",
-  tex_engine = "pdflatex"
+  tex_engine = "pdflatex", 
+  tex_runs = 2
 ) {
   
   #format == "pdf" means internally "tex"
@@ -110,7 +112,9 @@ render_report <- function(
   
   # tex -> pdf
   if (format == "tex"){
-    system(sprintf("%s -output-directory=%s %s ", tex_engine, tmp_dir, tex_file))
+    for (i in 1:tex_runs){
+      system(sprintf("%s -output-directory=%s %s ", tex_engine, tmp_dir, tex_file))
+    }
     file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
   }else{
     file.copy(tex_file, output, overwrite = T)
@@ -122,6 +126,7 @@ render_report <- function(
   # Clean up
   if (clean == T) {
     unlink(tmp_dir, recursive = T)
+    gc()
   } else {
     message("Temporary files: ", tmp_dir)
   }
