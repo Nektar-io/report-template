@@ -12,6 +12,7 @@
 #' @param clean remove all temporarily created files (default: TRUE)
 #' @param format format of the report, takes "tex" or "html"
 #' @param tex_engine which tex engine should bee used, default is pdflatex
+#' @param tex_options options passed to the tex engine
 #' @param tex_runs how many times should tex run, e.g. for updating table of contents
 #' @examples
 #' \dontrun{
@@ -31,6 +32,7 @@ render_report <- function(
   clean = T, 
   format="tex",
   tex_engine = "pdflatex", 
+  tex_options = "-halt-on-error",
   tex_runs = 2
 ) {
   
@@ -113,7 +115,16 @@ render_report <- function(
   # tex -> pdf
   if (format == "tex"){
     for (i in 1:tex_runs){
-      system(sprintf("%s -output-directory=%s %s ", tex_engine, tmp_dir, tex_file))
+      command_output <- system(sprintf("%s %s -output-directory=%s %s ", 
+                     tex_engine, 
+                     tex_options, 
+                     tmp_dir, 
+                     tex_file), 
+             intern = TRUE)
+      if(!is.null(attr(command_output, "status"))){
+        cat(paste(command_output, collapse="\n"))
+        stop(paste0(tex_engine, " exited with an error code: ", attr(command_output, "status"), ". Se the log above for more information."))
+      }
     }
     file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
   }else{
@@ -126,7 +137,6 @@ render_report <- function(
   # Clean up
   if (clean == T) {
     unlink(tmp_dir, recursive = T)
-    gc()
   } else {
     message("Temporary files: ", tmp_dir)
   }
