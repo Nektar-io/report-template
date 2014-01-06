@@ -4,7 +4,8 @@
 \usage{
 render_report(file, output = "output.pdf", theme = "tufte",
   config_file = NULL, partials = NULL, partials_path = "partials",
-  data = NULL, clean = T, format = "tex", tex_engine = "pdflatex")
+  data = NULL, clean = T, format = "tex", tex_engine = "pdflatex",
+  tex_runs = 2)
 }
 \arguments{
   \item{file}{brew file}
@@ -32,6 +33,9 @@ render_report(file, output = "output.pdf", theme = "tufte",
 
   \item{tex_engine}{which tex engine should bee used,
   default is pdflatex}
+
+  \item{tex_runs}{how many times should tex run, e.g. for
+  updating table of contents}
 }
 \description{
 Render PDF report from a brew template
