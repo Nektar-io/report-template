@@ -9,11 +9,11 @@
 #' @param partials whisker partials
 #' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
 #' @param data whisker data
-#' @param clean remove all temporarily created files (default: TRUE)
 #' @param format format of the report, takes "tex" or "html"
-#' @param tex_engine which tex engine should bee used, default is pdflatex
+#' @param tex_engine which tex engine should bee used (default: pdflatex)
 #' @param tex_options options passed to the tex engine
 #' @param tex_runs how many times should tex run, e.g. for updating table of contents
+#' @param keep_tex should the tex file (as raw.tex) be copied to the ouput directory (default: FALSE)
 #' @examples
 #' \dontrun{
 #'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
@@ -29,11 +29,11 @@ render_report <- function(
   partials = NULL,
   partials_path = "partials",
   data = NULL,
-  clean = T, 
   format="tex",
   tex_engine = "pdflatex", 
   tex_options = "-halt-on-error",
-  tex_runs = 2
+  tex_runs = 2, 
+  keep_tex = FALSE
 ) {
   
   #format == "pdf" means internally "tex"
@@ -59,10 +59,9 @@ render_report <- function(
   }
   
   # Generate temporary file path
-  tmp_dir <- dirname(tempfile())
+  tmp_dir <- tempdir() 
   
-  # Create temporary directories
-  dir.create(tmp_dir, showWarnings = F)
+  # Create temporary directory for templates
   dir.create(file.path(tmp_dir, "templates"), showWarnings = F)
   
   # Generate temporary tex file
@@ -110,7 +109,8 @@ render_report <- function(
   }
   cat(tex, file = tex_file, sep = "\n")
   
-  file.copy(tex_file, paste0("pre-output.", format), overwrite = T)
+  if(keep_tex && format == "tex")
+    file.copy(tex_file, file.path(dirname(output), "raw.tex"), overwrite = T)
   
   # tex -> pdf
   if (format == "tex"){
@@ -129,15 +129,5 @@ render_report <- function(
     file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
   }else{
     file.copy(tex_file, output, overwrite = T)
-  }
-  
-
-  
-  
-  # Clean up
-  if (clean == T) {
-    unlink(tmp_dir, recursive = T)
-  } else {
-    message("Temporary files: ", tmp_dir)
   }
 }

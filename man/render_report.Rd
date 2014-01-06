@@ -4,8 +4,8 @@
 \usage{
 render_report(file, output = "output.pdf", theme = "tufte",
   config_file = NULL, partials = NULL, partials_path = "partials",
-  data = NULL, clean = T, format = "tex", tex_engine = "pdflatex",
-  tex_options = "-halt-on-error", tex_runs = 2)
+  data = NULL, format = "tex", tex_engine = "pdflatex",
+  tex_options = "-halt-on-error", tex_runs = 2, keep_tex = FALSE)
 }
 \arguments{
   \item{file}{brew file}
@@ -25,19 +25,19 @@ render_report(file, output = "output.pdf", theme = "tufte",
 
   \item{data}{whisker data}
 
-  \item{clean}{remove all temporarily created files
-  (default: TRUE)}
-
   \item{format}{format of the report, takes "tex" or
   "html"}
 
-  \item{tex_engine}{which tex engine should bee used,
-  default is pdflatex}
+  \item{tex_engine}{which tex engine should bee used
+  (default: pdflatex)}
 
   \item{tex_options}{options passed to the tex engine}
 
   \item{tex_runs}{how many times should tex run, e.g. for
   updating table of contents}
+
+  \item{keep_tex}{should the tex file (as raw.tex) be
+  copied to the ouput directory (default: FALSE)}
 }
 \description{
 Render PDF report from a brew template
