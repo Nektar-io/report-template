@@ -4,7 +4,7 @@
 \usage{
 render_report(file, output = "output.pdf", theme = "tufte",
   config_file = NULL, partials = NULL, partials_path = "partials",
-  data = NULL)
+  data = NULL, clean = T, format = "tex", tex_engine = "pdflatex")
 }
 \arguments{
   \item{file}{brew file}
@@ -23,6 +23,15 @@ render_report(file, output = "output.pdf", theme = "tufte",
   script}
 
   \item{data}{whisker data}
+
+  \item{clean}{remove all temporarily created files
+  (default: TRUE)}
+
+  \item{format}{format of the report, takes "tex" or
+  "html"}
+
+  \item{tex_engine}{which tex engine should bee used,
+  default is pdflatex}
 }
 \description{
 Render PDF report from a brew template
