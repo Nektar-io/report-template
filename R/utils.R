@@ -33,6 +33,11 @@ read_file <- function(file) {
 }
 
 
+
+
+
+### TODO: move to package format.tables? 
+### TODO: rethink how to get the parameter type/convert
 #' pander.format.tables
 #' 
 #' function for rendering tables of class format.tables
