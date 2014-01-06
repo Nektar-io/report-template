@@ -10,7 +10,8 @@
 #' @param partials_path partials directory, as default it points to "partials" in the same directory as the main script
 #' @param data whisker data
 #' @param clean remove all temporarily created files (default: TRUE)
-#' @param format format of the report, takes "tex"
+#' @param format format of the report, takes "tex" or "html"
+#' @param tex_engine which tex engine should bee used, default is pdflatex
 #' @examples
 #' \dontrun{
 #'   render_report(system.file("examples/report-1.template", package = "reportTemplate"), "report-1.pdf")
@@ -27,7 +28,8 @@ render_report <- function(
   partials_path = "partials",
   data = NULL,
   clean = T, 
-  format="tex"
+  format="tex",
+  tex_engine = "pdflatex"
 ) {
   
   #format == "pdf" means internally "tex"
@@ -104,11 +106,11 @@ render_report <- function(
   }
   cat(tex, file = tex_file, sep = "\n")
   
-  #file.copy(tex_file, "output.tex", overwrite = T)
+  file.copy(tex_file, paste0("pre-output.", format), overwrite = T)
   
   # tex -> pdf
   if (format == "tex"){
-    system(sprintf("pdflatex -output-directory=%s %s ", tmp_dir, tex_file))
+    system(sprintf("%s -output-directory=%s %s ", tex_engine, tmp_dir, tex_file))
     file.copy(file.path(tmp_dir, "output.pdf"), output, overwrite = T)
   }else{
     file.copy(tex_file, output, overwrite = T)
